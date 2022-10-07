@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: system-ui;
+				font-size: 18px;
+				color: black;
+				background-color: white;
+				padding: 10px;
+				text-align: center;
+			}
+			button {
+				font-family: system-ui;
+				font-size: 18px;
+			}
+			.subtitle {
+				font-size: 14px;
+				color: "#333333";
+			}
+		</style>
+	</head>
+	<body>
+		<h1>BingSearcher</h1>
+		<div id="beforeSearchDiv">
+			<p>Ready to automatically search? Hit the button below if you are already on Bing.</p>
+			<p>Make sure to first configure your search terms in the options menu below.</p>
+			<a href="options.html" target="_blank">Options</a><br><br>
+			<button type="button" id="searchBtn">Start Search</button>
+		</div>
+		<div id="duringSearchDiv" style="display: none;">
+			<h3>Searching...</h3>
+			<p class="subtitle">Please keep this panel open while searching. Close the panel to abort searches.</p>
+			<p id="searchFeedback">Initializing search...</p>
+		</div>
+		<script src="popup.js"></script>
+	</body>
+</html>

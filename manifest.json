@@ -1,0 +1,20 @@
+{
+	"name": "BingSearcher",
+	"description": "Automatically searches Bing on Chromium for those sweet Microsoft rewards points",
+	"version": "1.0",
+	"manifest_version": 3,
+	"options_page": "options.html",
+	"background": {
+		"service_worker": "background.js"
+	},
+	"permissions": ["activeTab", "scripting", "storage"],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"128": "/res/128.png"
+		}
+	},
+	"icons": {
+		"128": "/res/128.png"
+	}
+}

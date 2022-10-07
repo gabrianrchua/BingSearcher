@@ -1,0 +1,6 @@
+TODO:
+[/] auto navigate to https://www.bing.com
+[X] add multiple lists
+[/] randomize the order of the list
+[/] add customize delay time
+[/] add feedback text to popup.html (term 4/25, searching for..., keep this window open)

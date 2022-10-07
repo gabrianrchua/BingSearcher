@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: system-ui;
+				font-size: 18px;
+				color: black;
+				background-color: white;
+			}
+			button {
+				font-family: system-ui;
+				font-size: 18px;
+			}
+			.subtitle {
+				font-size: 14px;
+				color: "#333333";
+			}
+		</style>
+	</head>
+	<body>
+		<h1>BingSearcher Options</h1>
+		<h3>Search terms pool</h3>
+		<p class="subtitle">The searched terms will be randomly selected among this pool. Put as many searches as you want!</p>
+		<button type="button" id="addTermBtn">+</button>
+		<button type="button" id="deleteTermBtn">-</button><br>
+		<div id="textHolderDiv"></div><br>
+		<h3>Search amount</h3>
+		<p class="subtitle">The number of searches to do each session. Aim for 25 searches to maximize rewards points!</p>
+		<input type="number" id="searchAmt"><br>
+		<h3>Delay time (ms)</h3>
+		<p class="subtitle">Time to wait between searches in ms. Try to pick the lowest possible value that still searches properly. A slower computer will need a longer delay time. Default value is 4000ms.</p>
+		<input type="number" id="delayTime"><br>
+		<h3>Apply changes</h3>
+		<button type="button" id="applyTermsBtn">Apply</button>
+		<span id="feedbackSpn"></span>
+		<script src="options.js"></script>
+	</body>
+</html>
