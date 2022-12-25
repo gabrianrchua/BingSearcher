@@ -87,7 +87,7 @@ btn.addEventListener("click", async function() {
 								chrome.storage.local.remove('curTerm');
 								
 								console.log("In tab: searching for: " + term);
-								document.querySelector("input#sb_form_q").value = term;
+								document.querySelector("#sb_form_q").value = term;
 								document.querySelector("input#sb_form_go").click();
 							});
 						}
