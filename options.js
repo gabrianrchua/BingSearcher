@@ -1,6 +1,9 @@
 const saveBtn = document.getElementById('saveBtn');
 const addBtn = document.getElementById('addTermBtn');
 const delBtn = document.getElementById('deleteTermBtn');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFileInput = document.getElementById('importFileInput');
 const termsDiv = document.getElementById('textHolderDiv');
 const delayTime = document.getElementById('delayTime');
 const delayJitter = document.getElementById('delayJitter');
@@ -56,6 +59,60 @@ delBtn.addEventListener('click', function () {
   searchTerms.pop();
   renderTermBoxes();
   setDirty();
+});
+
+exportBtn.addEventListener('click', function () {
+  const termsString = searchTerms.join('$');
+  const blob = new Blob([termsString], { type: 'text/plain' });
+
+  // Get current date and time in the format mm-dd-yyyy-hh-mm
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+
+  const filename = `bing-searcher-${month}-${day}-${year}-${hours}-${minutes}.search`;
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+importBtn.addEventListener('click', function () {
+  importFileInput.click();
+});
+
+importFileInput.addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  console.log(file);
+  if (!file) {
+    return;
+  }
+  // ensure .search file is given
+  if (file.name.split('.').pop() === 'search') {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const termsString = e.target.result;
+      searchTerms = termsString.split('$');
+      renderTermBoxes();
+      chrome.storage.sync.set({ terms: searchTerms.join('$') });
+      feedbackSpn.innerText = 'Changes imported!';
+      feedbackSpn.style.color = '';
+      setTimeout(function () {
+        feedbackSpn.innerText = '';
+      }, 2000);
+    };
+    reader.readAsText(file);
+  } else {
+    alert('Please select a valid BingSearcher file (.search)');
+  }
 });
 
 delayTime.addEventListener('focusout', function () {
