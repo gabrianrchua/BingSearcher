@@ -64,7 +64,7 @@ delayTime.addEventListener('focusout', function () {
 delayTime.addEventListener('input', setDirty);
 
 delayJitter.addEventListener('focusout', function () {
-  delayJitterMs = parseInt(delayJitter.value);
+  delayJitter = parseInt(delayJitter.value);
 });
 delayJitter.addEventListener('input', setDirty);
 

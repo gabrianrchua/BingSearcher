@@ -2,9 +2,11 @@ const btn = document.getElementById('searchBtn');
 const preSearchDiv = document.getElementById('beforeSearchDiv');
 const postSearchDiv = document.getElementById('duringSearchDiv');
 const searchFeedback = document.getElementById('searchFeedback');
+
 let delayMs = 4000;
-let numSearches = 1;
-let [tab] = [null];
+let delayJitterMs = 1000;
+let numSearches = 5;
+let tab = null;
 
 (async function () {
   [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -17,18 +19,13 @@ let [tab] = [null];
 })();
 
 chrome.storage.sync.get('delay', function ({ delay }) {
-  if (delay == null || delay == '') {
-    delayMs = 4000;
-  } else {
-    delayMs = parseInt(delay);
-  }
+  delayMs = delay ? parseInt(delay) : 4000;
+});
+chrome.storage.sync.get('jitter', function ({ jitter }) {
+  delayJitterMs = jitter ? parseInt(jitter) : 1000;
 });
 chrome.storage.sync.get('searches', function ({ searches }) {
-  if (searches == null || searches == '') {
-    numSearches = 25;
-  } else {
-    numSearches = parseInt(searches);
-  }
+  numSearches = searches ? parseInt(searches) : 25;
 });
 
 btn.addEventListener('click', async function () {
@@ -46,19 +43,13 @@ btn.addEventListener('click', async function () {
     let searchTerms;
     chrome.storage.sync.get('terms', function ({ terms }) {
       console.log(terms);
-      if (terms == null || terms == '') {
-        searchTerms = ['Jeff bezos net worth', 'Jeff bezos wiki', 'Jeff bezos'];
-      } else {
-        searchTerms = terms.split('$');
-      }
+      searchTerms = terms
+        ? terms.split('$')
+        : ['Jeff bezos net worth', 'Jeff bezos wiki', 'Jeff bezos'];
       console.log('Got search terms from storage.');
       console.log(searchTerms);
       console.log(
-        'searching for ' +
-          numSearches +
-          ' searches from ' +
-          searchTerms.length +
-          ' total.'
+        `searching for ${numSearches} searches from ${searchTerms.length} total.`
       );
       // shuffle array
       let finalSearchTerms = searchTerms
@@ -77,20 +68,12 @@ btn.addEventListener('click', async function () {
       let curTermIndex = 1;
       const searchRecur = (curTerms) => {
         if (curTerms.length == 0) {
-          searchFeedback.innerText =
-            'Done searching! Searched ' + termsLength + ' terms.';
+          searchFeedback.innerText = `Done searching! Searched ${termsLength} terms.`;
           return;
         }
         let curTerm = curTerms.pop();
         console.log('Searching for: ' + curTerm);
-        searchFeedback.innerText =
-          '(' +
-          curTermIndex +
-          '/' +
-          termsLength +
-          ") Searching '" +
-          curTerm +
-          "'";
+        searchFeedback.innerText = `(${curTermIndex}/${termsLength}) Searching '${curTerm}'`;
 
         chrome.storage.local.set(
           {
@@ -117,9 +100,16 @@ btn.addEventListener('click', async function () {
           }
         );
 
+        const timeToWait =
+          delayMs +
+          Math.floor(Math.random() * (delayJitterMs * 2)) -
+          delayJitterMs;
+        console.log(
+          `Delay is ${delayMs} +/- ${delayJitterMs}. Waiting ${timeToWait}ms before continuing`
+        );
         setTimeout(function () {
           searchRecur(finalSearchTerms);
-        }, delayMs);
+        }, timeToWait);
       };
       searchRecur(finalSearchTerms);
     });
