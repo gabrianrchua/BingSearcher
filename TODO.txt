@@ -4,4 +4,7 @@ TODO:
 [/] randomize the order of the list
 [/] add customize delay time
 [/] add feedback text to popup.html (term 4/25, searching for..., keep this window open)
-[ ] add export/import feature as csv
+[/] add export/import feature as csv
+[ ] add idle run mode:
+  [ ] monitor span.points-container[data-tag="RewardsHeader.Counter"] for changes
+  [ ] exponential backoff if not changed
