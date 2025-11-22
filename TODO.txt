@@ -8,3 +8,4 @@ TODO:
 [ ] add idle run mode:
   [ ] monitor span.points-container[data-tag="RewardsHeader.Counter"] for changes
   [ ] exponential backoff if not changed
+[ ] refactor to use background script rather than temporarily storing next word (ew)
