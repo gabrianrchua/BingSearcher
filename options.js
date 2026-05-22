@@ -138,7 +138,9 @@ function renderTermBoxes() {
       i +
       "' value='" +
       searchTerms[i] +
-      "'><br>";
+      "'><button id='delBtn" +
+      i +
+      "'>-</button><br>";
   }
   termsDiv.innerHTML = finalHtml;
   for (let i in searchTerms) {
@@ -148,6 +150,11 @@ function renderTermBoxes() {
       updateTerm(i);
     });
     element.addEventListener('input', setDirty);
+    document.getElementById('delBtn' + i).addEventListener('click', function () {
+      searchTerms.splice(i, 1);
+      renderTermBoxes();
+      setDirty();
+    });
   }
 }
 
