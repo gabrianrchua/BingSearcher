@@ -91,9 +91,13 @@ btn.addEventListener('click', async function () {
                   chrome.storage.local.remove('curTerm');
 
                   console.log('In tab: searching for: ' + term);
-                  document.querySelector('#sb_form_q').value = term;
+                  document.querySelector('#sb_form_q').value = curTerm;
                   const goElement = document.querySelector('input#sb_form_go') ?? document.querySelector('button[aria-label=Search]');
-                  goElement.click();
+                  if (goElement) {
+                    goElement.click();
+                  } else {
+                    document.querySelector('form[action="/search"]').requestSubmit();
+                  }
                 });
               },
             });
@@ -118,7 +122,11 @@ btn.addEventListener('click', async function () {
 });
 
 function doSearch() {
-  document.querySelector('input#sb_form_q').value = curTerm;
+  document.querySelector('#sb_form_q').value = curTerm;
   const goElement = document.querySelector('input#sb_form_go') ?? document.querySelector('button[aria-label=Search]');
-  goElement.click();
+  if (goElement) {
+    goElement.click();
+  } else {
+    document.querySelector('form[action="/search"]').requestSubmit();
+  }
 }
